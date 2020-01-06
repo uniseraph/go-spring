@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"
-	"github.com/webull/grpc-push/pkg/info"
+	"gitlab.ustock.cc/core/go-spring/info"
 	"net/http"
 	"net/http/pprof"
 )

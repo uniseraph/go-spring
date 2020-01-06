@@ -23,7 +23,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/webull/grpc-push/pkg/info"
+	"gitlab.ustock.cc/core/go-spring/info"
 	"os"
 	"strings"
 )

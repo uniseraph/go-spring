@@ -18,6 +18,7 @@ func NewHttpHandler() *mux.Router {
 	r.HandleFunc("/info",Info)
 	r.HandleFunc("/config", Config)
 	r.Handle("/prometheus",promhttp.Handler())
+	r.Handle("/metrics",promhttp.Handler())
 	r.HandleFunc("/debug/pprof/", pprof.Index)
 	r.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
 	r.HandleFunc("/debug/pprof/profile", pprof.Profile)

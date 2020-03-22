@@ -24,22 +24,32 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gitlab.ustock.cc/core/go-spring/info"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	"os"
 	"strings"
 )
 
 var cfgFile string
 
+var logFile string
+
+var logConfig zap.Config
 
 var rootConfig struct{
 	confPrefix  string
 	serviceName string
 	//logPath     string
 
+	logFile     string
 	grpcHealthProbeEnabled bool
 	grpcHealthProbeHome string
 	grpcHealthProbeBinary string
 	consulClient *api.Client
+}
+
+func LogConfig() *zap.Config {
+	return &logConfig
 }
 func ServiceName() string {
 	return rootConfig.serviceName
@@ -90,9 +100,19 @@ to quickly create a Cobra application.`,
 		}
 		rootConfig.consulClient = client
 		if viper.GetBool("consul.enabled")==true {
-			if err := parseConsulConfig(client, []string{
-				rootConfig.confPrefix + "/application",
-				rootConfig.confPrefix + "/" + rootConfig.serviceName}); err != nil {
+			var configPaths []string
+
+			if viper.GetBool("consul.context.enabled") {
+				configPaths= []string{
+					rootConfig.confPrefix + "/" + viper.GetString("consul.context"),
+					rootConfig.confPrefix + "/" + rootConfig.serviceName}
+			}else{
+				configPaths = []string{
+					rootConfig.confPrefix + "/" + rootConfig.serviceName}
+			}
+
+
+			if err := parseConsulConfig(client, configPaths); err != nil {
 				panic(err)
 			}
 		}
@@ -114,6 +134,14 @@ to quickly create a Cobra application.`,
 		}
 
 
+
+		logConfig= zap.NewProductionConfig()
+		logConfig.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+		logConfig.DisableStacktrace = true
+		logConfig.OutputPaths=[]string{viper.GetString("log.file")}
+		logConfig.ErrorOutputPaths=[]string{viper.GetString("log.file")}
+		logConfig.Encoding = viper.GetString("log.encoding")
+		
 	},
 }
 
@@ -135,6 +163,8 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/."+info.Target+".yaml)")
 	RootCmd.PersistentFlags().String("conf.prefix", "config", "consul config prefix ,default: config")
 	RootCmd.PersistentFlags().String("service.name", info.Target, "service name in consul")
+	RootCmd.PersistentFlags().String("log.file", "/dev/stdout", "log file, default is stdout")
+	RootCmd.PersistentFlags().String("log.encoding", "console", "json/console")
 
 	RootCmd.PersistentFlags().String("consul.address", "127.0.0.1:8500", "consul server addr")
 	RootCmd.PersistentFlags().Bool("grpc.health.probe.enabled", false, "enable grpc-health-probe ")
@@ -142,9 +172,12 @@ func init() {
 	RootCmd.PersistentFlags().String("grpc.health.probe.binary", "grpc_health_probe", "grpc-health-probe binary name")
 
 	RootCmd.PersistentFlags().Bool("consul.enabled", true, "enable consul ")
+	RootCmd.PersistentFlags().Bool("consul.context.enabled", true, "enable consul config context ")
+	RootCmd.PersistentFlags().String("consul.context", "application", "consul config context ")
 	RootCmd.PersistentFlags().Bool("vault.enabled", false, "enable vault ")
 	RootCmd.PersistentFlags().String("vault.address", "http://127.0.0.1:8200", "vault server addr")
 	RootCmd.PersistentFlags().String("vault.token", "root", "root")
+
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	viper.BindPFlags(RootCmd.PersistentFlags())

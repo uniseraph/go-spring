@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"gitlab.ustock.cc/core/go-spring/types"
+	"github.com/uniseraph/go-spring/types"
 
 	"go.uber.org/zap"
 	"sync"

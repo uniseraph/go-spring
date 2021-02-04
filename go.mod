@@ -1,4 +1,4 @@
-module gitlab.ustock.cc/core/go-spring
+module github.com/uniseraph/go-spring
 
 go 1.13
 

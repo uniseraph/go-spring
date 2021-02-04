@@ -2,8 +2,8 @@ package spring
 
 import (
 	"fmt"
-	"gitlab.ustock.cc/core/go-spring/addr"
-	"gitlab.ustock.cc/core/go-spring/info"
+	"github.com/uniseraph/go-spring/addr"
+	"github.com/uniseraph/go-spring/info"
 	"testing"
 )
 

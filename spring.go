@@ -1,8 +1,8 @@
 package spring
 
 import (
-	_ "gitlab.ustock.cc/core/go-spring/cmd"
-	_ "gitlab.ustock.cc/core/go-spring/info"
-	_ "gitlab.ustock.cc/core/go-spring/registry/consul"
-	_ "gitlab.ustock.cc/core/go-spring/kafka"
+	_ "github.com/uniseraph/go-spring/cmd"
+	_ "github.com/uniseraph/go-spring/info"
+	_ "github.com/uniseraph/go-spring/registry/consul"
+	_ "github.com/uniseraph/go-spring/kafka"
 )

@@ -19,7 +19,7 @@ func StartConsumers(ctx context.Context , config KafkaConfig, handler Handler) {
 	for i = 0; i < config.ConsumerNum; i++ {
 
 		if ok {
-			wg.Add(1)
+			(*wg).Add(1)
 		}
 		ch := make(chan *types.OpEvent, 10)
 

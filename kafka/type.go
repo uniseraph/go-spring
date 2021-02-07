@@ -1,6 +1,9 @@
 package kafka
 
-import "context"
+import (
+	"context"
+	"sync"
+)
 
 type KafkaConfig struct {
 	KafkaAddrs    string
@@ -10,13 +13,13 @@ type KafkaConfig struct {
 	ConsumerGroup string
 }
 
-type kafkaConfigContextKey struct {}
+type waitGroupKey struct {}
 
-func NewContext(ctx context.Context, cfg *KafkaConfig) context.Context {
-	return context.WithValue(ctx, kafkaConfigContextKey{},cfg)
+func NewContext(ctx context.Context, group *sync.WaitGroup) context.Context {
+	return context.WithValue(ctx, waitGroupKey{},group)
 }
 
-func FromContext(ctx context.Context) (*KafkaConfig,bool){
-	v,ok := ctx.Value(kafkaConfigContextKey{}).(*KafkaConfig)
+func FromContext(ctx context.Context) (*sync.WaitGroup,bool){
+	v,ok := ctx.Value(waitGroupKey{}).(*sync.WaitGroup)
 	return v,ok
 }

@@ -7,7 +7,6 @@ require (
 	github.com/gorilla/mux v1.7.3
 	github.com/hashicorp/consul/api v1.3.0
 	github.com/hashicorp/vault/api v1.0.4
-	github.com/micro/go-micro v1.18.0
 	github.com/micro/go-micro/v2 v2.3.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/hashstructure v1.0.0

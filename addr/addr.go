@@ -1,7 +1,7 @@
 package addr
 
 import (
-	"github.com/micro/go-micro/util/addr"
+	"github.com/micro/go-micro/v2/util/addr"
 	"strconv"
 	"strings"
 )

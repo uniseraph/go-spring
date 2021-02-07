@@ -13,7 +13,7 @@ import (
 
 func StartConsumers(ctx context.Context , config KafkaConfig, handler Handler) {
 
-	wg , ok := ctx.Value(sync.WaitGroup{}).(*sync.WaitGroup)
+	wg , ok := FromContext(ctx)
 	channels := make([]chan *types.OpEvent, 0, config.ConsumerNum)
 	var i int
 	for i = 0; i < config.ConsumerNum; i++ {

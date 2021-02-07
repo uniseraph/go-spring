@@ -3,7 +3,7 @@ module github.com/uniseraph/go-spring
 go 1.13
 
 require (
-	github.com/confluentinc/confluent-kafka-go v1.4.2
+	github.com/confluentinc/confluent-kafka-go v1.1.0
 	github.com/gorilla/mux v1.7.3
 	github.com/hashicorp/consul/api v1.3.0
 	github.com/hashicorp/vault/api v1.0.4
